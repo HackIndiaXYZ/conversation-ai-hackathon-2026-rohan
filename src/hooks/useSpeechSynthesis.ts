@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 
 export function useSpeechSynthesis() {
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -8,12 +8,12 @@ export function useSpeechSynthesis() {
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      
+
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onboundary = (event) => {
-        // Drive viseme based on boundary events (word/sentence)
-        setViseme(event.charLength > 5 ? 0.8 : 0.4);
-        setTimeout(() => setViseme(0), 150);
+        // Trigger mouth movement on word boundaries
+        setViseme(0.8);
+        setTimeout(() => setViseme(0), 100);
       };
       utterance.onend = () => {
         setIsSpeaking(false);
@@ -34,3 +34,4 @@ export function useSpeechSynthesis() {
 
   return { isSpeaking, viseme, speak, stop, hasSupport: typeof window !== "undefined" && !!window.speechSynthesis };
 }
+

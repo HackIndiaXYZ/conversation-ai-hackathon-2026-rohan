@@ -11,9 +11,9 @@ interface AvatarProps {
   viseme: number;
 }
 
-const Avatar = ({ url, viseme }: AvatarProps) => {
+// Avatar.tsx is purely 3D; Error handling is moved to the parent component
+const Avatar = ({ url, viseme, onError }: AvatarProps & { onError: () => void }) => {
   const [vrm, setVrm] = useState<VRM | null>(null);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     const loader = new GLTFLoader();
@@ -27,15 +27,15 @@ const Avatar = ({ url, viseme }: AvatarProps) => {
         setVrm(vrmData);
       },
       undefined,
-      () => setError(true)
+      () => onError()
     );
-  }, [url]);
+  }, [url, onError]);
 
   useFrame(({ clock }) => {
     if (vrm) {
       if (vrm.expressionManager) {
         vrm.expressionManager.setValue("aa", viseme);
-        vrm.expressionManager.setValue("happy", 0.3); // Basic expression
+        vrm.expressionManager.setValue("happy", 0.3);
         vrm.expressionManager.update();
       }
       const t = clock.getElapsedTime();
@@ -43,42 +43,30 @@ const Avatar = ({ url, viseme }: AvatarProps) => {
         const head = vrm.humanoid.getRawBoneNode("head");
         if (head) {
           head.rotation.y = Math.sin(t * 0.5) * 0.1;
-          head.rotation.x = Math.cos(t * 0.8) * 0.05;
         }
       }
     }
   });
 
-  if (error) return <mesh><boxGeometry args={[1, 1, 1]} /><meshStandardMaterial color="red" /></mesh>;
   return vrm ? <primitive object={vrm.scene} /> : null;
 };
 
 export default function AvatarCanvas({ url, viseme }: AvatarProps) {
+  const [error, setError] = useState(false);
   return (
     <div className="w-full h-full min-h-[400px] bg-slate-900 rounded-2xl overflow-hidden relative">
+      {error && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-900/80 text-white p-6 text-center">
+            <p className="mb-4">Avatar failed to load — check your connection.</p>
+            <button onClick={() => window.location.reload()} className="px-4 py-2 bg-blue-600 rounded">Retry</button>
+        </div>
+      )}
       <Canvas shadows>
         <PerspectiveCamera makeDefault position={[0, 1.5, 0.8]} fov={40} />
         <Environment preset="city" />
-        
-        <Avatar url={url} viseme={viseme} />
-        
-        <ContactShadows 
-          opacity={0.4} 
-          scale={5} 
-          blur={2} 
-          far={4} 
-          resolution={256} 
-          color="#000000" 
-        />
+        <Avatar url={url} viseme={viseme} onError={() => setError(true)} />
+        <ContactShadows opacity={0.4} scale={5} blur={2} far={4} resolution={256} color="#000000" />
       </Canvas>
-      
-      {/* Overlay for status */}
-      <div className="absolute bottom-4 left-4 flex gap-2">
-        <div className="px-3 py-1 bg-black/50 backdrop-blur-md rounded-full text-xs text-white flex items-center gap-2 border border-white/20">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          Live Perspective
-        </div>
-      </div>
     </div>
   );
 }
