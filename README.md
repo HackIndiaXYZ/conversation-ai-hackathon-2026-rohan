@@ -73,7 +73,7 @@ Proxa Avatar RT is a real-time conversational AI system designed for pharmaceuti
 See [architecture.md](./architecture.md) for a detailed breakdown of the system design.
 
 ## 📄 License
-See [third-party-licenses.md](./third-party-licenses.md) for details on components and APIs.
+See [LICENSE](./LICENSE) for the project's MIT license and [third-party-licenses.md](./third-party-licenses.md) for details on dependencies.
 
 ---
 Built for the **Conversation AI Hackathon 2026**.

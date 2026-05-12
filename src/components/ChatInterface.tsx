@@ -17,6 +17,11 @@ export default function ChatInterface() {
   const { isListening, transcript, startListening, stopListening, hasSupport: hasSttSupport } = useSpeechRecognition();
   const { isSpeaking, viseme, speak, stop: stopSpeaking, hasSupport: hasTtsSupport } = useSpeechSynthesis();
   
+  // Inside the return block, before the main layout
+  {!hasTtsSupport && (
+    <div className="bg-red-500 text-white p-2 text-center text-xs">Voice output is not supported in this browser.</div>
+  )}
+  
   const transcriptEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
