@@ -52,7 +52,22 @@ Proxa Avatar RT is a high-fidelity, low-latency conversational platform that all
 
 ## 📖 Technical Approach
 
-See [architecture.md](architecture.md) and [technical-approach.md](technical-approach.md) for full system design details.
+Proxa Avatar RT is a real-time conversational AI system designed for pharmaceutical sales roleplay. 
+
+### Core Pipeline
+1. **Audio Input**: User speaks into the browser microphone.
+2. **STT (Speech-to-Text)**: Browser's Web Speech API transcribes audio in real-time.
+3. **LLM Orchestration**: Transcription is sent to the backend.
+4. **NVIDIA NIM LLM**: The system uses NVIDIA NIM (Llama-3.3-70b-instruct) to generate a response.
+5. **TTS (Text-to-Speech)**: The text response is converted to speech (Web Speech API).
+6. **Avatar Animation**: Audio-analysis-driven viseme animation in Three.js.
+
+### Latency Optimization
+- **Client-Side Processing**: By using the browser's native STT/TTS, we avoid unnecessary round-trips.
+- **Streaming LLM Responses**: NVIDIA NIM streaming allows us to start processing the response before the full LLM inference completes, achieving near-zero wait time.
+- **Pseudo-Viseme Synthesis**: We analyze the speech amplitude to drive the VRM model's mouth animation in real-time, providing immediate visual feedback.
+
+---
 
 ## 🏗️ Architecture
 See [architecture.md](./architecture.md) for a detailed breakdown of the system design.
