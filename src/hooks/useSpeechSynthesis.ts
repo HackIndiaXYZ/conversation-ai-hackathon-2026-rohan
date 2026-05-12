@@ -11,7 +11,6 @@ export function useSpeechSynthesis() {
 
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onboundary = (event) => {
-        // Trigger mouth movement on word boundaries
         setViseme(0.8);
         setTimeout(() => setViseme(0), 100);
       };
@@ -34,4 +33,5 @@ export function useSpeechSynthesis() {
 
   return { isSpeaking, viseme, speak, stop, hasSupport: typeof window !== "undefined" && !!window.speechSynthesis };
 }
+
 

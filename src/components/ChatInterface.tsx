@@ -189,7 +189,7 @@ export default function ChatInterface() {
           <div className="max-w-4xl mx-auto flex items-center gap-4">
             <button
               onClick={toggleListening}
-              disabled={!hasSttSupport}
+              disabled={!hasSttSupport || !hasTtsSupport}
               className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-lg ${
                 isListening 
                   ? "bg-red-500 hover:bg-red-600 text-white animate-pulse" 
