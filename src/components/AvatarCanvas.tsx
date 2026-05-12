@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Environment, ContactShadows } from "@react-three/drei";
-import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { VRM, VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
+import { VRM, VRMLoaderPlugin } from "@pixiv/three-vrm";
 
 interface AvatarProps {
   url: string;
@@ -14,7 +13,7 @@ interface AvatarProps {
 
 const Avatar = ({ url, viseme }: AvatarProps) => {
   const [vrm, setVrm] = useState<VRM | null>(null);
-  const { scene, camera } = useThree();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const loader = new GLTFLoader();
@@ -24,26 +23,20 @@ const Avatar = ({ url, viseme }: AvatarProps) => {
       url,
       (gltf) => {
         const vrmData = gltf.userData.vrm as VRM;
-        
-        // Rotate the avatar to face the camera if needed
         gltf.scene.rotation.y = Math.PI;
-        
         setVrm(vrmData);
       },
-      (progress) => console.log(`Loading avatar: ${(progress.loaded / progress.total) * 100}%`),
-      (error) => console.error("Error loading avatar", error)
+      undefined,
+      () => setError(true)
     );
   }, [url]);
 
   useFrame(({ clock }) => {
     if (vrm) {
-      // Apply viseme (mouth opening)
       if (vrm.expressionManager) {
         vrm.expressionManager.setValue("aa", viseme);
         vrm.expressionManager.update();
       }
-
-      // Natural head movement (idle)
       const t = clock.getElapsedTime();
       if (vrm.humanoid) {
         const head = vrm.humanoid.getRawBoneNode("head");
@@ -55,12 +48,8 @@ const Avatar = ({ url, viseme }: AvatarProps) => {
     }
   });
 
-  return vrm ? <primitive object={vrm.scene} /> : (
-    <mesh>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="gray" />
-    </mesh>
-  );
+  if (error) return <mesh><boxGeometry args={[1, 1, 1]} /><meshStandardMaterial color="red" /></mesh>;
+  return vrm ? <primitive object={vrm.scene} /> : null;
 };
 
 export default function AvatarCanvas({ url, viseme }: AvatarProps) {

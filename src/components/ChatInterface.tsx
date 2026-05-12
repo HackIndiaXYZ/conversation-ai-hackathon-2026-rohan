@@ -56,10 +56,16 @@ export default function ChatInterface() {
     }
   };
 
+  const transcriptRef = useRef("");
+  
+  useEffect(() => {
+    transcriptRef.current = transcript;
+  }, [transcript]);
+
   const toggleListening = () => {
     if (isListening) {
       stopListening();
-      if (transcript) handleSendMessage(transcript);
+      if (transcriptRef.current) handleSendMessage(transcriptRef.current);
     } else {
       stopSpeaking();
       startListening();
@@ -192,7 +198,7 @@ export default function ChatInterface() {
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(chatInput)}
+                onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage(chatInput)}
                 placeholder={isListening ? "Listening..." : "Type your message or use the mic..."}
                 className="w-full py-4 px-6 rounded-full bg-slate-100 dark:bg-slate-800 border-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white shadow-inner"
               />
