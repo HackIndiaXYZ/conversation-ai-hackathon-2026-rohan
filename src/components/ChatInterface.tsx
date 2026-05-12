@@ -31,7 +31,6 @@ export default function ChatInterface() {
   const handleSendMessage = async (text: string) => {
     if (!text.trim()) return;
 
-    // Maintain a window of last 15 messages (history + new)
     const newMessages = [...messages, { role: "user", content: text }].slice(-15);
     setMessages(newMessages);
     setIsLoading(true);
@@ -49,11 +48,21 @@ export default function ChatInterface() {
         })
       });
 
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (!response.body) throw new Error("No response body");
 
-      setMessages([...newMessages, { role: "assistant", content: data.content }]);
-      speak(data.content);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullResponse = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        fullResponse += chunk;
+      }
+
+      setMessages([...newMessages, { role: "assistant", content: fullResponse }]);
+      speak(fullResponse);
     } catch (error) {
       console.error("Chat Error:", error);
       setMessages([...newMessages, { role: "assistant", content: "I'm sorry, I'm having trouble connecting right now. Please try again." }]);
