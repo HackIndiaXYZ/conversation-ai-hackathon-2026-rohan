@@ -35,6 +35,7 @@ const Avatar = ({ url, viseme }: AvatarProps) => {
     if (vrm) {
       if (vrm.expressionManager) {
         vrm.expressionManager.setValue("aa", viseme);
+        vrm.expressionManager.setValue("happy", 0.3); // Basic expression
         vrm.expressionManager.update();
       }
       const t = clock.getElapsedTime();
@@ -57,16 +58,6 @@ export default function AvatarCanvas({ url, viseme }: AvatarProps) {
     <div className="w-full h-full min-h-[400px] bg-slate-900 rounded-2xl overflow-hidden relative">
       <Canvas shadows>
         <PerspectiveCamera makeDefault position={[0, 1.5, 0.8]} fov={40} />
-        <OrbitControls 
-          target={[0, 1.4, 0]} 
-          enableZoom={false} 
-          enablePan={false}
-          minPolarAngle={Math.PI / 2.5}
-          maxPolarAngle={Math.PI / 1.8}
-        />
-        <ambientLight intensity={0.5} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} />
         <Environment preset="city" />
         
         <Avatar url={url} viseme={viseme} />

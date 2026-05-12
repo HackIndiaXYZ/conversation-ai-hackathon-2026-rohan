@@ -26,7 +26,8 @@ export default function ChatInterface() {
   const handleSendMessage = async (text: string) => {
     if (!text.trim()) return;
 
-    const newMessages = [...messages, { role: "user", content: text }];
+    // Maintain a window of last 15 messages (history + new)
+    const newMessages = [...messages, { role: "user", content: text }].slice(-15);
     setMessages(newMessages);
     setIsLoading(true);
     setChatInput("");

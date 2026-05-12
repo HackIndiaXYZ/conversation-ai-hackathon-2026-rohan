@@ -50,6 +50,10 @@ Proxa Avatar RT is a high-fidelity, low-latency conversational platform that all
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## 📖 Technical Approach
+
+See [architecture.md](architecture.md) and [technical-approach.md](technical-approach.md) for full system design details.
+
 ## 🏗️ Architecture
 See [architecture.md](./architecture.md) for a detailed breakdown of the system design.
 
