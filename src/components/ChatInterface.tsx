@@ -58,7 +58,14 @@ export default function ChatInterface() {
         const { done, value } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
-        fullResponse += chunk;
+        
+        // Split and process each line (handle potential multi-line chunks)
+        const lines = chunk.split("\n");
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+             fullResponse += line.slice(6);
+          }
+        }
       }
 
       setMessages([...newMessages, { role: "assistant", content: fullResponse }]);
