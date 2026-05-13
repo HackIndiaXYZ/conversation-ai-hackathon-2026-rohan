@@ -63,7 +63,7 @@ export default function ChatInterface() {
         const lines = chunk.split("\n");
         for (const line of lines) {
           if (line.startsWith("data: ")) {
-             fullResponse += line.slice(6);
+             try { const data = JSON.parse(line.slice(6)); fullResponse += data.choices[0].delta.content ?? ""; } catch(e) {}
           }
         }
       }
