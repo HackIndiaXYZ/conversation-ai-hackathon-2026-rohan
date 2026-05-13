@@ -18,9 +18,6 @@ export default function ChatInterface() {
   const { isSpeaking, viseme, speak, stop: stopSpeaking, hasSupport: hasTtsSupport } = useSpeechSynthesis();
   
   // Inside the return block, before the main layout
-  {!hasTtsSupport && (
-    <div className="bg-red-500 text-white p-2 text-center text-xs">Voice output is not supported in this browser.</div>
-  )}
   
   const transcriptEndRef = useRef<HTMLDivElement>(null);
 
@@ -101,6 +98,11 @@ export default function ChatInterface() {
   };
 
   return (
+      {!hasTtsSupport && (
+         <div className="absolute top-0 w-full bg-red-600 text-white p-2 text-center text-sm z-50">
+           Voice synthesis is not supported in your browser.
+         </div>
+      )}
     <div className="flex flex-col lg:flex-row h-screen bg-slate-50 dark:bg-slate-950 overflow-hidden">
       {/* Sidebar - Persona Switcher */}
       <div className="w-full lg:w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-6 overflow-y-auto">
