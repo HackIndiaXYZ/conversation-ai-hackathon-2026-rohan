@@ -11,8 +11,9 @@ export function useSpeechSynthesis() {
 
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onboundary = (event) => {
-        setViseme(0.8);
-        setTimeout(() => setViseme(0), 100);
+        const intensity = Math.min((event.charLength || 5) / 8, 1);
+        setViseme(0.3 + intensity * 0.7);
+        setTimeout(() => setViseme(0), 150);
       };
       utterance.onend = () => {
         setIsSpeaking(false);

@@ -3,6 +3,7 @@
 **Real-time Conversational AI Avatar for Pharmaceutical & Life Sciences Sales Roleplay.**
 
 > 🚀 **[LIVE DEMO: Experience the Conversation AI Avatar](https://proxa-avatar-rt.vercel.app)**
+> 🎥 **[DEMO VIDEO: Watch the Product Walkthrough](https://youtu.be/E4ndPz_xZZM)**
 
 Proxa Avatar RT is a high-fidelity, low-latency conversational platform that allows medical sales representatives to practice high-stakes interactions with AI-powered healthcare professionals.
 
