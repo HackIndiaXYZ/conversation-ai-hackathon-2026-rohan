@@ -74,7 +74,11 @@ Proxa Avatar RT is a real-time conversational AI system designed for pharmaceuti
 See [architecture.md](./architecture.md) for a detailed breakdown of the system design.
 
 ## 📄 License
-See [LICENSE](./LICENSE) for the project's MIT license and [LICENSE](./LICENSE) for details on dependencies.
+See [LICENSE](./LICENSE) for the project's MIT license and [Third-Party Licenses](./third-party-licenses.md) for details on dependencies.
+
+## ⚖️ Note for Judges
+*   **API Requirements**: This application requires an NVIDIA NIM API Key to interact with the LLM. 
+*   **Functional UI**: If no key is provided, the UI and 3D avatar scene are still fully functional and can be tested locally using the Chat interface mock-response features.
 
 ---
 Built for the **Conversation AI Hackathon 2026**.

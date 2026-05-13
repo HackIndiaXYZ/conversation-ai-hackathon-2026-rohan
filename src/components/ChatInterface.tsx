@@ -214,7 +214,7 @@ export default function ChatInterface() {
                   : "bg-blue-600 hover:bg-blue-700 text-white"
               } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
-              {isListening ? <Mic size={24} /> : <MicOff size={24} />}
+              {isListening ? <MicOff size={24} /> : <Mic size={24} />}
             </button>
             
             <div className="flex-1 relative">
