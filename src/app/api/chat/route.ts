@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const stream = new ReadableStream({
       async start(controller) {
         await getChatCompletion(sanitizedMessages, apiKey, (chunk) => {
-          controller.enqueue(encoder.encode(chunk));
+          controller.enqueue(encoder.encode(`data: ${chunk}\n\n`));
         });
         controller.close();
       }
